@@ -19,3 +19,80 @@
     daemon_reload: yes
   become: yes
   when: inventory_hostname in groups['k8s_clusters']
+
+- name: "Add kubernetes repo"
+  copy: 
+    content: "[kubernetes]
+name=Kubernetes
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg" 
+    dest: "/etc/yum.repos.d/kubernetes.repo"
+    backup: yes
+    owner: root
+    group: root
+    mode: 0644
+  become: yes
+  when: inventory_hostname in groups['k8s_masters']
+
+- name: "install Kubernetes packagess"
+  dnf:
+    name:
+      - kubelet
+      - kubeadm
+      - kubectl
+    state: latest
+  become: yes
+  when: inventory_hostname in groups['k8s_masters']
+
+- name: "install Kubernetes packagess"
+  apt:
+    name:
+      - kubelet
+      - kubeadm
+      - kubectl
+    state: latest
+  become: yes
+  when: inventory_hostname in groups['k8s_nodes']
+
+- name: "Enabled kubelet"
+  systemd:
+    name: kubelet
+    enabled: yes
+
+- name: "Reset Kubernetes"
+  shell: kubeadm reset -f
+  become: yes
+  register: reset_cluster
+  when: inventory_hostname in groups['k8s_masters']
+
+- name: Init Kubernetes cluster
+  when: reset_cluster is succeeded and inventory_hostname in groups['k8s_masters']
+  shell: |
+    kubeadm init --service-cidr {{ service_cidr }} \
+                 --kubernetes-version {{ kube_version }} \
+                 --pod-network-cidr {{ pod_network_cidr }} \
+                 --token {{ token }} \
+                 --apiserver-advertise-address {{ master_ip }} \
+                 {{ kubeadm_opts }} \
+                 {{ init_opts }}
+  register: init_cluster
+
+- name: Create Kubernetes config directory
+  file:
+    path: ".kube/"
+    state: directory
+  when: inventory_hostname in groups['k8s_masters']
+
+- name: Copy admin.conf to Home directory
+  when: init_cluster is succeeded and inventory_hostname in groups['k8s_masters']
+  copy:
+    src: "{{ kubeadmin_config }}"
+    dest: ".kube/config"
+    owner: "{{ ansible_user | default(ansible_user_id) }}"
+    group: "{{ ansible_user | default(ansible_user_id) }}"
+    mode: 0755
+    remote_src: true
+
