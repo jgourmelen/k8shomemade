@@ -1,0 +1,43 @@
+domotique ansible_host=192.168.1.2 ansible_port=22 ansible_user='pi' ansible_ssh_private_key_file='~/.ssh/id_rsa'
+master01 ansible_host=192.168.1.3 ansible_port=22 ansible_user='jugou28' ansible_ssh_private_key_file='~/.ssh/id_rsa'
+pinode01 ansible_host=192.168.1.11 ansible_port=22 ansible_user='pi' ansible_ssh_private_key_file='~/.ssh/id_rsa'
+pinode02 ansible_host=192.168.1.12 ansible_port=22 ansible_user='pi' ansible_ssh_private_key_file='~/.ssh/id_rsa'
+pinode03 ansible_host=192.168.1.13 ansible_port=22 ansible_user='pi' ansible_ssh_private_key_file='~/.ssh/id_rsa'
+pinode04 ansible_host=192.168.1.14 ansible_port=22 ansible_user='pi' ansible_ssh_private_key_file='~/.ssh/id_rsa'
+
+[k8s_masters]
+master01
+
+[k8s_nodes]
+domotique
+pinode01
+pinode02
+pinode03
+pinode04
+
+[raspbian]
+domotique
+pinode01
+pinode02
+pinode03
+pinode04
+
+[centos]
+master01
+
+[pi3]
+domotique
+
+[pi4]
+pinode01
+pinode02
+pinode03
+pinode04
+
+[k8s_clusters]
+domotique
+pinode01
+pinode02
+pinode03
+pinode04
+master01

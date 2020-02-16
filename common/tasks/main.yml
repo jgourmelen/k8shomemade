@@ -1,0 +1,21 @@
+---
+- name: "Install Docker"
+  shell: curl -sSL https://get.docker.com | sh
+  when: inventory_hostname in groups['k8s_clusters']
+
+- name: 'Adding a user to the docker group'
+  user:
+    name: "{{ ansible_user }}"
+    group: docker
+    append: yes
+  become: yes
+  when: inventory_hostname in groups['k8s_clusters']
+
+- name: Start and enable docker service
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  become: yes
+  when: inventory_hostname in groups['k8s_clusters']
