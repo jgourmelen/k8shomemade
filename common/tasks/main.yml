@@ -1,9 +1,16 @@
 ---
-- name: "Install Docker"
-  shell: curl -sSL https://get.docker.com | sh
+- name: Download docker install script
+  get_url:
+    url: https://get.docker.com
+    dest: ./get-docker.sh
   when: inventory_hostname in groups['k8s_clusters']
 
-- name: 'Adding a user to the docker group'
+- name: Install docker
+  become: true
+  shell: /bin/sh get-docker.sh
+  when: inventory_hostname in groups['k8s_clusters']
+
+- name: Adding a user to the docker group
   user:
     name: "{{ ansible_user }}"
     group: docker
@@ -20,7 +27,7 @@
   become: yes
   when: inventory_hostname in groups['k8s_clusters']
 
-- name: "Add kubernetes repo"
+- name: Add kubernetes repository
   copy: 
     content: "[kubernetes]
 name=Kubernetes
@@ -33,43 +40,33 @@ gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cl
     backup: yes
     owner: root
     group: root
-    mode: 0644
+    mode: '0644'
   become: yes
   when: inventory_hostname in groups['k8s_masters']
 
-- name: "install Kubernetes packagess"
-  dnf:
+- name: Install Kubernetes packages
+  package:
     name:
       - kubelet
       - kubeadm
       - kubectl
     state: latest
   become: yes
-  when: inventory_hostname in groups['k8s_masters']
 
-- name: "install Kubernetes packagess"
-  apt:
-    name:
-      - kubelet
-      - kubeadm
-      - kubectl
-    state: latest
-  become: yes
-  when: inventory_hostname in groups['k8s_nodes']
-
-- name: "Enabled kubelet"
+- name: Enabled kubelet
   systemd:
     name: kubelet
     enabled: yes
 
-- name: "Reset Kubernetes"
-  shell: kubeadm reset -f
+- name: Reset Kubernetes
+  shell: kubeadm reset --force
   become: yes
   register: reset_cluster
   when: inventory_hostname in groups['k8s_masters']
 
 - name: Init Kubernetes cluster
   when: reset_cluster is succeeded and inventory_hostname in groups['k8s_masters']
+  become: yes
   shell: |
     kubeadm init --service-cidr {{ service_cidr }} \
                  --kubernetes-version {{ kube_version }} \
@@ -88,11 +85,38 @@ gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cl
 
 - name: Copy admin.conf to Home directory
   when: init_cluster is succeeded and inventory_hostname in groups['k8s_masters']
+  become: yes
   copy:
     src: "{{ kubeadmin_config }}"
     dest: ".kube/config"
     owner: "{{ ansible_user | default(ansible_user_id) }}"
     group: "{{ ansible_user | default(ansible_user_id) }}"
-    mode: 0755
+    mode: '0755'
     remote_src: true
+
+- name: Reset Kubernetes component
+  shell: "kubeadm reset --force"
+  register: reset_cluster
+  become: yes
+  when: inventory_hostname in groups['k8s_nodes']
+
+- name: Reset Kubernetes component
+  shell: "iptables -F && rm -rf /etc/cni/*"
+  register: reset_cluster
+  become: yes
+  when: inventory_hostname in groups['k8s_nodes']
+
+- name: Join to Kubernetes cluster
+  when: reset_cluster is succeeded and inventory_hostname in groups['k8s_nodes']
+  shell: |
+    kubeadm join --token {{ token }} \
+                --discovery-token-unsafe-skip-ca-verification \
+                {{ master_ip }}:6443
+  become: yes
+  register: join_cluster
+
+- name: Install flannel
+  when: inventory_hostname in groups['k8s_masters']
+  shell: |
+    kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 
