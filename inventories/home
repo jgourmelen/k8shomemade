@@ -4,6 +4,7 @@ pinode01 ansible_host=192.168.1.21 ansible_port=22 ansible_user='pi' ansible_ssh
 pinode02 ansible_host=192.168.1.22 ansible_port=22 ansible_user='pi' ansible_ssh_private_key_file='~/.ssh/id_rsa'
 pinode03 ansible_host=192.168.1.23 ansible_port=22 ansible_user='pi' ansible_ssh_private_key_file='~/.ssh/id_rsa'
 pinode04 ansible_host=192.168.1.24 ansible_port=22 ansible_user='pi' ansible_ssh_private_key_file='~/.ssh/id_rsa'
+rog ansible_host=192.168.1.60 ansible_port=22 ansible_user='jugou28' ansible_ssh_private_key_file='~/.ssh/id_rsa'
 
 [k8s_masters]
 master01
@@ -14,6 +15,7 @@ pinode01
 pinode02
 pinode03
 pinode04
+rog
 
 [raspbian]
 domotique
@@ -24,6 +26,9 @@ pinode04
 
 [centos]
 master01
+
+[ubuntu]
+rog
 
 [pi3]
 domotique
@@ -41,3 +46,4 @@ pinode02
 pinode03
 pinode04
 master01
+rog

@@ -16,3 +16,5 @@ additional_features:
   helm: false
   metallb: false
   healthcheck: false
+
+master_ip: "{{ hostvars[groups.k8s_masters | sort | first].ansible_default_ipv4.address }}"

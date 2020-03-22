@@ -1,0 +1,16 @@
+- name: "Install Domoticz"
+  block:
+  - name: Copy domoticz file yaml
+    when: inventory_hostname in groups['k8s_masters']
+    template:
+      src: domoticz.yaml
+      dest: domoticz.yaml
+    tags: domoticz
+  - name: Install Domoticz
+    when: inventory_hostname in groups['k8s_masters']
+    shell: kubectl apply -f domoticz.yaml
+    tags: domoticz
+  - name: Delete domoticz file yaml
+    file:
+      path: domoticz.yaml
+      state: absent

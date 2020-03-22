@@ -1,0 +1,7 @@
+
+- name: "Download Kui installer"
+  get_url:
+    url: https://raw.githubusercontent.com/johanhaleby/kubetail/master/kubetail
+    dest: /usr/bin/kubetail
+    mode: 0644
+  when: inventory_hostname in groups['k8s_masters']

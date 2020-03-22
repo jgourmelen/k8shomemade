@@ -1,0 +1,37 @@
+- name: Install Helm
+  block:
+    - name: Download Helm installer
+      get_url:
+        url: https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+        dest: ./get_helm.sh
+        mode: 0755
+    - name: Run Helm installer
+      shell: ./get_helm.sh
+    - name: Delete Helm installer
+      file:
+        path: get_helm.sh
+        state: absent
+  tags: helm
+  when: inventory_hostname in groups['k8s_masters']
+
+- name: Add Helm Repo
+  block:
+  - name: Add Helm repo stable
+    shell: helm repo add stable https://kubernetes-charts.storage.googleapis.com
+    tags: helm
+    when: inventory_hostname in groups['k8s_masters']
+
+  - name: Add Helm repo incubator
+    shell: helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
+    tags: helm
+    when: inventory_hostname in groups['k8s_masters']
+
+  - name: Add Helm repo traefik
+    shell: helm repo add traefik https://containous.github.io/traefik-helm-chart
+    tags: helm
+    when: inventory_hostname in groups['k8s_masters']
+
+- name: Update Helm repo
+  shell: helm repo update
+  tags: helm
+  when: inventory_hostname in groups['k8s_masters']

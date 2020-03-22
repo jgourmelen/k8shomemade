@@ -1,0 +1,28 @@
+---
+# tasks file for docker
+- name: Download docker install script
+  get_url:
+    url: https://get.docker.com
+    dest: ./get-docker.sh
+
+- name: Install docker
+  shell: /bin/sh get-docker.sh
+
+- name: Remove docker install script
+  file:
+    path: get-docker.sh
+    state: absent
+
+- name: Adding a user to the docker group
+  user:
+    name: "{{ ansible_user }}"
+    group: docker
+    append: yes
+
+- name: Start and enable docker service
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+    daemon_reload: yes
+

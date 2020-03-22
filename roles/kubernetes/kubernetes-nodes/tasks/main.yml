@@ -1,0 +1,9 @@
+- name: Join to Kubernetes cluster
+  when: reset_cluster is succeeded and inventory_hostname in groups['k8s_nodes']
+  shell: |
+    kubeadm join --token {{ token }} \
+                --discovery-token-unsafe-skip-ca-verification \
+                --ignore-preflight-errors=swap \
+                {{ master_ip }}:6443
+  become: yes
+  register: join_cluster

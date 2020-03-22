@@ -1,3 +1,42 @@
+
+- hosts: all
+  become: true
+  roles:
+    - common/docker
+  tags: docker
+
 - hosts: all
   roles:
     - common
+  tags: common
+
+- hosts: k8s_masters
+  roles:
+    - kubernetes/kubernetes-administration/helm
+    - kubernetes/kubernetes-administration/kubetail
+    - kubernetes/kubernetes-administration/kui
+  become: yes
+  tags: kubernetes-administration
+
+- hosts: k8s_clusters
+  roles:
+    - kubernetes/kubernetes-reset
+  tags: kubernetes-administration
+
+- hosts: k8s_masters
+  roles:
+    - kubernetes/kubernetes-master
+  tags: kubernetes-masters
+
+- hosts: k8s_nodes
+  roles:
+    - kubernetes/kubernetes-nodes
+  tags: kubernetes-nodes
+
+- hosts: k8s_masters
+  roles:
+    - kubernetes/kubernetes-applications/flannel
+    - kubernetes/kubernetes-applications/metric-server
+    - kubernetes/kubernetes-applications/nginx-ingress-controller
+    - kubernetes/kubernetes-applications/domoticz
+  tags: kubernetes-applications

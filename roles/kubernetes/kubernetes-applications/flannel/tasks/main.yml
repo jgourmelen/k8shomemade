@@ -1,0 +1,4 @@
+- name: Install flannel
+  when: inventory_hostname in groups['k8s_masters']
+  shell: |
+    kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
