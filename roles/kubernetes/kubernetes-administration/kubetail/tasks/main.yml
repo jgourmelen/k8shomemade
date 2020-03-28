@@ -3,5 +3,6 @@
   get_url:
     url: https://raw.githubusercontent.com/johanhaleby/kubetail/master/kubetail
     dest: /usr/bin/kubetail
-    mode: 0644
+    mode: 0755
+  become: yes
   when: inventory_hostname in groups['k8s_masters']

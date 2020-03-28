@@ -15,7 +15,6 @@
     - kubernetes/kubernetes-administration/helm
     - kubernetes/kubernetes-administration/kubetail
     - kubernetes/kubernetes-administration/kui
-  become: yes
   tags: kubernetes-administration
 
 - hosts: k8s_clusters
