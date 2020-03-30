@@ -6,15 +6,37 @@
     state: latest
   become: yes
 
-- name: Update kernel settings
+- name: Install Epel for centos release
+  package:
+    name:
+      - epel-release
+    state: latest
   become: yes
-  sysctl:
-    name: net.bridge.bridge-nf-call-iptables
-    value: '1'
-    sysctl_set: yes
-    state: present
-    reload: yes
-  ignore_errors: True
+  when: ansible_distribution == "CentOS"
+
+- name: Install packages
+  package:
+    name:
+      - python3
+      - python3-pip
+      - python3-setuptools
+    state: latest
+  become: yes
+
+- name: Install packages fot no-centos
+  package:
+    name:
+      - python3-pkg-resources
+    state: latest
+  become: yes
+  when: ansible_distribution not in "CentOS"
+
+- name: install pip
+  pip:
+    name: pip
+    executable: pip3
+    state: latest
+  become: yes
 
 # - name: Disable system swap
 #   shell: "swapoff -a"

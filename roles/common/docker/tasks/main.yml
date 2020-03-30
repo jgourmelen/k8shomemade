@@ -4,14 +4,26 @@
   get_url:
     url: https://get.docker.com
     dest: ./get-docker.sh
+  when: ansible_distribution != 'Ubuntu'
 
 - name: Install docker
   shell: /bin/sh get-docker.sh
+  when: ansible_distribution != 'Ubuntu'
+
+- name: Install docker
+  package:
+    name:
+      - "docker-ce"
+      - "docker-ce-cli"
+      - "containerd.io"
+    state: latest
+  when: ansible_distribution == 'Ubuntu'
 
 - name: Remove docker install script
   file:
     path: get-docker.sh
     state: absent
+  when: ansible_distribution != 'Ubuntu'
 
 - name: Adding a user to the docker group
   user:

@@ -20,7 +20,13 @@
 - hosts: k8s_clusters
   roles:
     - kubernetes/kubernetes-reset
-  tags: kubernetes-administration
+  tags: kubernetes-reset
+
+- hosts: k8s_clusters
+  roles:
+    - kubernetes/kubernetes-common
+  tags: kubernetes-common
+  become: yes
 
 - hosts: k8s_masters
   roles:

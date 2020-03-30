@@ -1,10 +1,10 @@
-domotique ansible_host=192.168.1.2 ansible_port=22 ansible_user='pi' ansible_ssh_private_key_file='~/.ssh/id_rsa'
-master01 ansible_host=192.168.1.3 ansible_port=22 ansible_user='jugou28' ansible_ssh_private_key_file='~/.ssh/id_rsa'
-pinode01 ansible_host=192.168.1.21 ansible_port=22 ansible_user='pi' ansible_ssh_private_key_file='~/.ssh/id_rsa'
-pinode02 ansible_host=192.168.1.22 ansible_port=22 ansible_user='pi' ansible_ssh_private_key_file='~/.ssh/id_rsa'
-pinode03 ansible_host=192.168.1.23 ansible_port=22 ansible_user='pi' ansible_ssh_private_key_file='~/.ssh/id_rsa'
-pinode04 ansible_host=192.168.1.24 ansible_port=22 ansible_user='pi' ansible_ssh_private_key_file='~/.ssh/id_rsa'
-rog ansible_host=192.168.1.60 ansible_port=22 ansible_user='jugou28' ansible_ssh_private_key_file='~/.ssh/id_rsa'
+domotique ansible_host=192.168.1.2 ansible_port=22 ansible_user='pi' ansible_ssh_private_key_file='~/.ssh/id_rsa'     ansible_python_interpreter=/usr/bin/python3
+master01 ansible_host=192.168.1.3 ansible_port=22 ansible_user='jugou28' ansible_ssh_private_key_file='~/.ssh/id_rsa' ansible_python_interpreter=/usr/bin/python3
+pinode01 ansible_host=192.168.1.21 ansible_port=22 ansible_user='pi' ansible_ssh_private_key_file='~/.ssh/id_rsa'     ansible_python_interpreter=/usr/bin/python3
+pinode02 ansible_host=192.168.1.22 ansible_port=22 ansible_user='pi' ansible_ssh_private_key_file='~/.ssh/id_rsa'     ansible_python_interpreter=/usr/bin/python3
+pinode03 ansible_host=192.168.1.23 ansible_port=22 ansible_user='pi' ansible_ssh_private_key_file='~/.ssh/id_rsa'     ansible_python_interpreter=/usr/bin/python3
+pinode04 ansible_host=192.168.1.24 ansible_port=22 ansible_user='pi' ansible_ssh_private_key_file='~/.ssh/id_rsa'     ansible_python_interpreter=/usr/bin/python3
+rog ansible_host=192.168.1.60 ansible_port=22 ansible_user='jugou28' ansible_ssh_private_key_file='~/.ssh/id_rsa'     ansible_python_interpreter=/usr/bin/python3
 
 [k8s_masters]
 master01

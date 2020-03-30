@@ -2,23 +2,19 @@
   shell: "kubeadm reset --force"
   register: reset_cluster
   become: yes
-  when: inventory_hostname in groups['k8s_nodes']
 
 - name: Reset Kubernetes component
   shell: "iptables -F && rm -rf /etc/cni/*"
   #shell: "iptables -F"
   register: reset_cluster
   become: yes
-  when: inventory_hostname in groups['k8s_nodes']
 
 - name: Delete flannel.1 interface
   command: ip link delete flannel.1
-  when: inventory_hostname in groups['k8s_nodes']
   become: yes
   ignore_errors: True
 
 - name: Delete cni0 interface
   command: ip link delete cni0
-  when: inventory_hostname in groups['k8s_nodes']
   become: yes
   ignore_errors: True

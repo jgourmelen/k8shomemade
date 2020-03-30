@@ -1,3 +1,50 @@
+# Disable SELinux
+- name: Install libselinux-python latest version
+  package:
+    name:
+      - policycoreutils
+      - python3-setools
+    state: latest
+  become: yes
+  when: inventory_hostname not in groups['pi3']
+
+- selinux:
+    state: disabled
+  when: inventory_hostname not in groups['pi3']
+
+- name: Add the br_netfilter module
+  modprobe:
+    name: br_netfilter
+    state: present
+
+- name: Enable net.bridge.bridge-nf-call-iptables in sysctl
+  become: yes
+  sysctl:
+    name: net.bridge.bridge-nf-call-iptables
+    value: '1'
+    sysctl_set: yes
+    state: present
+    reload: yes
+  ignore_errors: True
+
+- name: Enable net.ipv4.ip_forward in sysctl
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    sysctl_file: /etc/sysctl.d/ipv4-ip_forward.conf
+    state: present
+    reload: yes
+
+- name: Disable SWAP in fstab since kubernetes can't work with swap enabled (2/2)
+  replace:
+    path: /etc/fstab
+    regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
+    replace: '# \1'
+
+- name: Disable SWAP since kubernetes can't work with swap enabled (1/2)
+  shell: |
+    swapoff -a
+
 - name: Add kubernetes repository
   when: inventory_hostname in groups['k8s_masters']
   template:
