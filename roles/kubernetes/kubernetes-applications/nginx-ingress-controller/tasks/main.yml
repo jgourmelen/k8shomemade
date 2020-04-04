@@ -1,0 +1,2 @@
+- name: "Install Nginx Ingress Controller"
+  shell: "helm install nginx-ingress stable/nginx-ingress --namespace kube-system"

@@ -1,0 +1,8 @@
+- name: Transfer config files to workstation
+  fetch:
+    src: /etc/kubernetes/admin.conf
+    dest: ~/.kube/config-k8shomemade
+    mode: 0600
+    flat: yes
+  become: yes
+  tags: 'kubernetes-postinstall'

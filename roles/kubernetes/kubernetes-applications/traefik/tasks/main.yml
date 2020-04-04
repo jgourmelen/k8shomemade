@@ -1,0 +1,18 @@
+- name: "Create rbac Traefik"
+  template:
+    src: traefik.yaml
+    dest: "/tmp/traefik.yaml"
+  tags: traefik
+
+# - name: "Install Traefik"
+  # shell: "helm install traefik traefik/traefik --values /tmp/values.yaml"
+  # tags: traefik
+
+# - name: "Create rbac Traefik"
+#   template:
+#     src: rbac.yaml
+#     dest: "/tmp/rbac.yaml"
+#   tags: traefik
+- name: "Install in kubernetes"
+  shell: "kubectl apply -f /tmp/traefik.yaml"
+  tags: traefik

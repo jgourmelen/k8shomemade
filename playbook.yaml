@@ -31,6 +31,7 @@
 - hosts: k8s_masters
   roles:
     - kubernetes/kubernetes-master
+    - kubernetes/kubernetes-postinstall
   tags: kubernetes-masters
 
 - hosts: k8s_nodes
@@ -41,7 +42,9 @@
 - hosts: k8s_masters
   roles:
     - kubernetes/kubernetes-applications/flannel
+    - kubernetes/kubernetes-applications/metallb
     - kubernetes/kubernetes-applications/metric-server
     - kubernetes/kubernetes-applications/nginx-ingress-controller
+    - kubernetes/kubernetes-applications/traefik
     - kubernetes/kubernetes-applications/domoticz
   tags: kubernetes-applications
