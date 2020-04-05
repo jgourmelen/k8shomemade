@@ -1,0 +1,15 @@
+- name: "Install jeedom"
+  block:
+  - name: Copy jeedom file yaml
+    when: inventory_hostname in groups['k8s_masters']
+    template:
+      src: jeedom.yaml
+      dest: jeedom.yaml
+  - name: Install jeedom
+    when: inventory_hostname in groups['k8s_masters']
+    shell: kubectl apply -f jeedom.yaml
+  - name: Delete jeedom file yaml
+    file:
+      path: jeedom.yaml
+      state: absent
+  tags: jeedom

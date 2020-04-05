@@ -27,6 +27,13 @@ pinode04
 [centos]
 master01
 
+[raspberry]
+domotique
+pinode01
+pinode02
+pinode03
+pinode04
+
 [ubuntu]
 rog
 

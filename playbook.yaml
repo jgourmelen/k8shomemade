@@ -10,6 +10,11 @@
     - common
   tags: common
 
+- hosts: raspbian
+  roles:
+    - common/raspberry
+  tags: raspberry-common
+
 - hosts: k8s_masters
   roles:
     - kubernetes/kubernetes-administration/helm
@@ -43,8 +48,10 @@
   roles:
     - kubernetes/kubernetes-applications/flannel
     - kubernetes/kubernetes-applications/metallb
-    - kubernetes/kubernetes-applications/metric-server
     - kubernetes/kubernetes-applications/nginx-ingress-controller
     - kubernetes/kubernetes-applications/traefik
+    - kubernetes/kubernetes-applications/cert-manager
+    - kubernetes/kubernetes-applications/metric-server
     - kubernetes/kubernetes-applications/domoticz
+    - kubernetes/kubernetes-applications/jeedom
   tags: kubernetes-applications

@@ -1,0 +1,10 @@
+- name: Run raspberry kernel upgrade (this can take up to 10 minutes)
+  command: /usr/bin/rpi-update
+  environment:
+    SKIP_WARNING: 1
+  tags: raspberry-upgrade-kernel
+  become: yes
+
+- name: Unconditionally reboot the machine with all defaults
+  reboot:
+  become: yes
