@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -27,7 +28,7 @@ spec:
         securityContext:
           privileged: true
         ports:
-        - containerPort: 80
+          - containerPort: 80
         volumeMounts:
             - name: domoticz
               mountPath: "/config"
@@ -36,15 +37,15 @@ spec:
             - name: ttyusb1
               mountPath: "/dev/serial/by-id/usb-RFXCOM_RFXtrx433XL_DO3MHTT3-if00-port0"
       volumes:
-      - name: domoticz
-        persistentVolumeClaim:
-          claimName: domoticz
-      - name: ttyusb0
-        hostPath:
-          path: /dev/serial/by-id/usb-Cartelectronic_Interface_USB_1_TIC_DA3P5NRA-if00-port0
-      - name: ttyusb1
-        hostPath:
-          path: /dev/serial/by-id/usb-RFXCOM_RFXtrx433XL_DO3MHTT3-if00-port0
+        - name: domoticz
+          persistentVolumeClaim:
+            claimName: domoticz
+        - name: ttyusb0
+          hostPath:
+            path: /dev/serial/by-id/usb-Cartelectronic_Interface_USB_1_TIC_DA3P5NRA-if00-port0
+        - name: ttyusb1
+          hostPath:
+            path: /dev/serial/by-id/usb-RFXCOM_RFXtrx433XL_DO3MHTT3-if00-port0
       nodeSelector:
         kubernetes.io/hostname: domotique
 ---
@@ -77,32 +78,32 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-k8shomemade
 spec:
   rules:
-  - host: domoticz.jugou28.com
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: domoticz
-          servicePort: 80
-  tls: # < placing a host in the TLS config will indicate a certificate should be created
-  - hosts:
-    - domoticz.jugou28.com
-    secretName: domoticz-cert # < cert-manager will store the created certificate in this secret.
+    - host: domoticz.jugou28.com
+      http:
+        paths:
+        - path: /
+          backend:
+            serviceName: domoticz
+            servicePort: 80
+  tls:
+    - hosts:
+      - domoticz.jugou28.com
+      secretName: domoticz-cert
 
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: domoticz 
+  name: domoticz
 spec:
   capacity:
-    storage: 5Gi 
+    storage: 5Gi
   accessModes:
-  - ReadWriteOnce 
-  nfs: 
+    - ReadWriteOnce
+  nfs:
     path: /volume3/workspace/domoticz
     server: 192.168.1.50
-  persistentVolumeReclaimPolicy: Retain 
+  persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -111,8 +112,7 @@ metadata:
   namespace: domoticz
 spec:
   accessModes:
-    - ReadWriteOnce 
+    - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi 
-
+      storage: 1Gi

@@ -1,3 +1,4 @@
+---
 dashboard:
   enabled: true
   domain: traefik-ui.jugou28.com

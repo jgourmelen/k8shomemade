@@ -1,3 +1,4 @@
+---
 - name: Install flannel
   when: inventory_hostname in groups['k8s_masters']
   shell: |

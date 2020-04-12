@@ -1,3 +1,4 @@
+---
 - name: "Install KUI"
   block:
     - name: "Download Kui installer"

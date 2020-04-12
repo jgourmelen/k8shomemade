@@ -1,3 +1,4 @@
+---
 - name: "Install Domoticz"
   block:
   - name: Copy domoticz file yaml

@@ -1,4 +1,4 @@
-
+---
 - hosts: all
   become: true
   roles:
@@ -54,4 +54,6 @@
     - kubernetes/kubernetes-applications/metric-server
     - kubernetes/kubernetes-applications/domoticz
     - kubernetes/kubernetes-applications/jeedom
+    - kubernetes/kubernetes-applications/jenkins
+    - kubernetes/kubernetes-applications/sonarqube
   tags: kubernetes-applications

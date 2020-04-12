@@ -1,4 +1,4 @@
-
+---
 - name: "Download Kui installer"
   get_url:
     url: https://raw.githubusercontent.com/johanhaleby/kubetail/master/kubetail

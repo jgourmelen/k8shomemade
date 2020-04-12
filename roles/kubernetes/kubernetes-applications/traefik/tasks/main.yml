@@ -1,3 +1,4 @@
+---
 - name: "Create rbac Traefik"
   template:
     src: traefik.yaml

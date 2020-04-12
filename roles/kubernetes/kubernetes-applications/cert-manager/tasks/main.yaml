@@ -1,3 +1,4 @@
+---
 - name: "Install cert-manager"
   block:
   - name: Copy cert-manager file yaml

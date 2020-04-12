@@ -1,1 +1,2 @@
+---
 metallb_address_space: "192.168.1.240/28"

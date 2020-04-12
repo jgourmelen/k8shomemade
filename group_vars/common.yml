@@ -1,4 +1,3 @@
 ---
-
-#master_ip: "{{ hostvars[groups.k8s_masters | sort | first].main_ip }}"
+# master_ip: "{{ hostvars[groups.k8s_masters | sort | first].main_ip }}"
 master_ip: "{{ hostvars[groups.k8s_masters | sort | first].ansible_default_ipv4.address }}"

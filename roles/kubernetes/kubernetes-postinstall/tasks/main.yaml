@@ -1,3 +1,4 @@
+---
 - name: Transfer config files to workstation
   fetch:
     src: /etc/kubernetes/admin.conf

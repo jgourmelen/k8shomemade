@@ -1,3 +1,4 @@
+---
 # Disable SELinux
 - name: Install libselinux-python latest version
   package:

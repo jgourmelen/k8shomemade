@@ -1,3 +1,4 @@
+---
 - name: "Install jeedom"
   block:
   - name: Copy jeedom file yaml

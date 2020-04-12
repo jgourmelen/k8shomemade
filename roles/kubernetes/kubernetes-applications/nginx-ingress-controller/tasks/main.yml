@@ -1,3 +1,4 @@
+---
 - name: "Install Nginx Ingress Controller"
   shell: "helm upgrade nginx-ingress stable/nginx-ingress --install \
           --namespace kube-system \
