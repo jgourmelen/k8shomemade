@@ -1,0 +1,12 @@
+---
+- name: Install SonarQube
+  block:
+  - name: "Copy Sonarqube values.yaml"
+    template:
+      src: values.yaml
+      dest: values.yaml
+
+  - name: "Install Sonarqube"
+    shell: "helm upgrade sonarqube oteemocharts/sonarqube --install \
+            --values values.yaml;"
+  tags: sonarqube

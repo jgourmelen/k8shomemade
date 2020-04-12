@@ -1,0 +1,23 @@
+---
+image:
+  pullPolicy: Always
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-k8shomemade
+  hosts:
+    - name: sonarqube.jugou28.com
+  tls:
+  - hosts:
+    - sonarqube.jugou28.com
+    secretName: sonarqube-cert
+postgresql:
+  enabled: false
+  postgresqlServer: 192.168.1.50
+  postgresqlUsername: sonar
+  postgresqlPassword: sonar
+  postgresqlDatabase: sonar
+  service:
+    port: 15432
+  nodeSelector: "kubernetes.io/arch=amd64"
