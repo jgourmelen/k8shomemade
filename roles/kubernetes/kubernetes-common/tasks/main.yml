@@ -9,7 +9,8 @@
   become: yes
   when: inventory_hostname not in groups['pi3']
 
-- selinux:
+- name: disabled selinux
+  selinux:
     state: disabled
   when: inventory_hostname not in groups['pi3']
 

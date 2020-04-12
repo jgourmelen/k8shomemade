@@ -22,14 +22,14 @@ spec:
         app: domoticz
     spec:
       containers:
-      - name: domoticz
-        image: linuxserver/domoticz:latest
-        imagePullPolicy: "Always"
-        securityContext:
-          privileged: true
-        ports:
-          - containerPort: 80
-        volumeMounts:
+        - name: domoticz
+          image: linuxserver/domoticz:latest
+          imagePullPolicy: "Always"
+          securityContext:
+            privileged: true
+          ports:
+            - containerPort: 80
+          volumeMounts:
             - name: domoticz
               mountPath: "/config"
             - name: ttyusb0
@@ -81,13 +81,13 @@ spec:
     - host: domoticz.jugou28.com
       http:
         paths:
-        - path: /
-          backend:
-            serviceName: domoticz
-            servicePort: 80
+          - path: /
+            backend:
+              serviceName: domoticz
+              servicePort: 80
   tls:
     - hosts:
-      - domoticz.jugou28.com
+        - domoticz.jugou28.com
       secretName: domoticz-cert
 
 ---

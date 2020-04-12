@@ -22,17 +22,17 @@ spec:
         app: jeedom
     spec:
       containers:
-      - name: jeedom
-        image: jugou28/jeedom:latest
-        imagePullPolicy: "Always"
-        securityContext:
-          privileged: true
-        ports:
-        - containerPort: 80
-        env:
-        - name: TZ
-          value: Europe/Paris
-        volumeMounts:
+        - name: jeedom
+          image: jugou28/jeedom:latest
+          imagePullPolicy: "Always"
+          securityContext:
+            privileged: true
+          ports:
+            - containerPort: 80
+          env:
+            - name: TZ
+              value: Europe/Paris
+          volumeMounts:
             - name: jeedom
               mountPath: "/opt/jeedom/html"
             - name: ttyusb0
@@ -40,15 +40,15 @@ spec:
             - name: ttyusb1
               mountPath: "/dev/serial/by-id/usb-RFXCOM_RFXtrx433XL_DO3MHTT3-if00-port0"
       volumes:
-      - name: jeedom
-        persistentVolumeClaim:
-          claimName: jeedom
-      - name: ttyusb0
-        hostPath:
-          path: /dev/serial/by-id/usb-Cartelectronic_Interface_USB_1_TIC_DA3P5NRA-if00-port0
-      - name: ttyusb1
-        hostPath:
-          path: /dev/serial/by-id/usb-RFXCOM_RFXtrx433XL_DO3MHTT3-if00-port0
+        - name: jeedom
+          persistentVolumeClaim:
+            claimName: jeedom
+        - name: ttyusb0
+          hostPath:
+            path: /dev/serial/by-id/usb-Cartelectronic_Interface_USB_1_TIC_DA3P5NRA-if00-port0
+        - name: ttyusb1
+          hostPath:
+            path: /dev/serial/by-id/usb-RFXCOM_RFXtrx433XL_DO3MHTT3-if00-port0
       nodeSelector:
         kubernetes.io/hostname: domotique
 ---
@@ -81,17 +81,17 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-k8shomemade
 spec:
   rules:
-  - host: jeedom.jugou28.com
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: jeedom
-          servicePort: 80
-  tls: # < placing a host in the TLS config will indicate a certificate should be created
-  - hosts:
-    - jeedom.jugou28.com
-    secretName: jeedom-cert # < cert-manager will store the created certificate in this secret.
+    - host: jeedom.jugou28.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: jeedom
+              servicePort: 80
+  tls:
+    - hosts:
+        - jeedom.jugou28.com
+      secretName: jeedom-cert
 
 ---
 apiVersion: v1
@@ -102,8 +102,8 @@ spec:
   capacity:
     storage: 5Gi
   accessModes:
-  - ReadWriteOnce
-  nfs: 
+    - ReadWriteOnce
+  nfs:
     path: /volume3/workspace/jeedom
     server: 192.168.1.50
   persistentVolumeReclaimPolicy: Retain

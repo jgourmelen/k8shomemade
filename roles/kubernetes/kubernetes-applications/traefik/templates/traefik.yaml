@@ -132,9 +132,9 @@ roleRef:
   kind: ClusterRole
   name: traefik-ingress-controller
 subjects:
-- kind: ServiceAccount
-  name: traefik-ingress-controller
-  namespace: kube-system
+  - kind: ServiceAccount
+    name: traefik-ingress-controller
+    namespace: kube-system
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -163,21 +163,19 @@ spec:
       serviceAccountName: traefik-ingress-controller
       terminationGracePeriodSeconds: 60
       containers:
-      - image: traefik:v2.0
-        name: traefik-ingress-lb
-        ports:
-        - name: http
-          containerPort: 80
-        - name: admin
-          containerPort: 8080
-        args:
-        - --api
-        - --api.insecure=true
-        # in this case "web" refers to the port name
-        # as specified in the service below
-        - --entrypoints.web.address=:80
-        - --providers.kubernetescrd
-        - --accesslog
+        - image: traefik:v2.0
+          name: traefik-ingress-lb
+          ports:
+            - name: http
+              containerPort: 80
+            - name: admin
+              containerPort: 8080
+          args:
+            - --api
+            - --api.insecure=true
+            - --entrypoints.web.address=:80
+            - --providers.kubernetescrd
+            - --accesslog
 ---
 kind: Service
 apiVersion: v1

@@ -20,4 +20,5 @@
     file:
       path: values.yaml
       state: absent
-  tags: jenkins  
+  tags: jenkins
+

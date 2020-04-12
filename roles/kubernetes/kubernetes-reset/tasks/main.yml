@@ -6,7 +6,7 @@
 
 - name: Reset Kubernetes component
   shell: "iptables -F && rm -rf /etc/cni/*"
-  #shell: "iptables -F"
+  # shell: "iptables -F"
   register: reset_cluster
   become: yes
 

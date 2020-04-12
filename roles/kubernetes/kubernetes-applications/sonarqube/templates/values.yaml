@@ -9,9 +9,9 @@ ingress:
   hosts:
     - name: sonarqube.jugou28.com
   tls:
-  - hosts:
-    - sonarqube.jugou28.com
-    secretName: sonarqube-cert
+    - hosts:
+        - sonarqube.jugou28.com
+      secretName: sonarqube-cert
 postgresql:
   enabled: false
   postgresqlServer: 192.168.1.50
