@@ -1,0 +1,23 @@
+---
+- name: "Install jenkins"
+  block:
+  - name: Copy jenkins values file yaml
+    template:
+      src: values.yaml
+      dest: values.yaml
+  - name: Copy pv.yaml
+    template:
+      src: pv.yaml
+      dest: pv.yaml
+  - name: Install jenkins
+    shell: |
+      kubectl apply -f pv.yaml;
+  - name: Delete jenkins value file yaml
+    file:
+      path: values.yaml
+      state: absent
+  - name: Delete jenkins pv.ile yaml
+    file:
+      path: values.yaml
+      state: absent
+  tags: jenkins  
