@@ -55,5 +55,6 @@
     - kubernetes/kubernetes-applications/domoticz
     - kubernetes/kubernetes-applications/jeedom
     - kubernetes/kubernetes-applications/jenkins
+    - kubernetes/kubernetes-applications/gitlab
     - kubernetes/kubernetes-applications/sonarqube
   tags: kubernetes-applications

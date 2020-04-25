@@ -1,0 +1,47 @@
+certmanager:
+  install: false
+prometheus:
+  install: false
+postgresql:
+  install: false
+redis:
+  install: false
+global:
+  edition: ce
+  hosts:
+    domain: jugou28.com
+  ingress:
+    configureCertmanager: false
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-k8shomemade
+  psql:
+    host: 192.168.1.50
+    port: 15432
+    database: gitlab
+    username: gitlab
+    password:
+      key: postgres-password
+      secret: gitlab-postgresql-password
+certmanager-issuer:
+  email: jugou28@gmail.com
+nginx-ingress:
+  enabled: false
+gitlab:
+  unicorn:
+    ingress:
+      annotations:
+        kubernetes.io/ingress.class: nginx
+      tls:
+        secretName: gitlab-unicorn-cert
+registry:
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    tls:
+      secretName: gitlab-registry-cert
+minio:
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    tls:
+      secretName: gitlab-minio-cert

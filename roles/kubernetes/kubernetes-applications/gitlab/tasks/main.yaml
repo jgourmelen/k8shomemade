@@ -1,0 +1,13 @@
+---
+- name: Install gitlab
+  block:
+  - name: "Copy gitlab values.yaml"
+    template:
+      src: values.yaml
+      dest: values.yaml
+
+  - name: "Install gitlab"
+    shell: "helm upgrade gitlab gitlab/gitlab --install \
+            --namespace=gitlab2 \
+            --values values.yaml;"
+  tags: gitlab
