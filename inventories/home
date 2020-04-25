@@ -5,6 +5,7 @@ pinode02 ansible_host=192.168.1.22 ansible_port=22 ansible_user='pi' ansible_ssh
 pinode03 ansible_host=192.168.1.23 ansible_port=22 ansible_user='pi' ansible_ssh_private_key_file='~/.ssh/id_rsa'     ansible_python_interpreter=/usr/bin/python3
 pinode04 ansible_host=192.168.1.24 ansible_port=22 ansible_user='pi' ansible_ssh_private_key_file='~/.ssh/id_rsa'     ansible_python_interpreter=/usr/bin/python3
 rog ansible_host=192.168.1.60 ansible_port=22 ansible_user='jugou28' ansible_ssh_private_key_file='~/.ssh/id_rsa'     ansible_python_interpreter=/usr/bin/python3
+d630 ansible_host=192.168.1.63 ansible_port=22 ansible_user='jugou28' ansible_ssh_private_key_file='~/.ssh/id_rsa'     ansible_python_interpreter=/usr/bin/python3
 
 [k8s_masters]
 master01
@@ -16,6 +17,7 @@ pinode02
 pinode03
 pinode04
 rog
+d630
 
 [raspbian]
 domotique
@@ -26,6 +28,9 @@ pinode04
 
 [centos]
 master01
+
+[fedora]
+d630
 
 [raspberry]
 domotique
@@ -54,6 +59,7 @@ pinode03
 pinode04
 master01
 rog
+d630
 
 [workstation]
 rog
