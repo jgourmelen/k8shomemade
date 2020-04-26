@@ -8,6 +8,6 @@
 
   - name: "Install gitlab"
     shell: "helm upgrade gitlab gitlab/gitlab --install \
-            --namespace=gitlab2 \
+            --namespace=gitlab \
             --values values.yaml;"
   tags: gitlab

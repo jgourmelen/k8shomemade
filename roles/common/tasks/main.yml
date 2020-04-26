@@ -1,4 +1,49 @@
 ---
+- debug:
+    msg:
+      - "System: {{ inventory_hostname }}"
+      - "Architecture: {{ ansible_architecture }}"
+      - " OS Family: {{ ansible_os_family }}"
+      - "OS: {{ ansible_distribution}}"
+      - "Release: {{ ansible_distribution_release}}"
+      - "Version: {{ ansible_distribution_version}}"
+      - "Gateway: {{ ansible_default_ipv4.gateway }}"
+      - "@IP: {{ ansible_default_ipv4.address }}"
+      - "@MAC: {{ ansible_default_ipv4.macaddress }}"
+      - "@Network: {{ ansible_default_ipv4.network }}"
+      - "@Type: {{ ansible_default_ipv4.type }}"
+      - "@Alias: {{ ansible_default_ipv4.alias }}"
+- name : Wheel configuration (sudoers passwordless)
+  block:
+  - name: Make sure we have a 'wheel' group
+    group:
+      name: wheel
+      state: present
+  
+  - name: sudo without password for wheel group
+    copy:
+      content: '%wheel ALL=(ALL:ALL) NOPASSWD:ALL'
+      dest: /etc/sudoers.d/wheel_nopasswd
+      mode: 0440
+
+  # - name: Allow 'wheel' group to have passwordless sudo
+  #   lineinfile:
+  #     dest: /etc/sudoers
+  #     state: present
+  #     regexp: '^%wheel'
+  #     line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+  #     validate: 'visudo -cf %s'
+  
+  - name: Add sudoers users to wheel group
+    user: name=jugou28 groups=wheel append=yes state=present createhome=yes
+  
+  
+  - name: Set up authorized keys for the deployer user
+    authorized_key: user=jugou28 key="{{item}}"
+    with_file:
+      - ~/.ssh/id_rsa.pub
+  become: yes
+
 - name: Update all packages to the latest version
   package:
     name:
@@ -6,7 +51,7 @@
     state: latest
   become: yes
 
-- name: Install Epel for centos release
+- name: Install Epel for CentOs release
   package:
     name:
       - epel-release
@@ -17,6 +62,7 @@
 - name: Install packages
   package:
     name:
+      - cockpit
       - python3
       - python3-pip
       - python3-setuptools
@@ -24,13 +70,13 @@
     state: latest
   become: yes
 
-- name: Install packages fot no-centos
+- name: Install packages for no CentOS
   package:
     name:
       - python3-pkg-resources
     state: latest
   become: yes
-  when: ansible_distribution not in "CentOS"
+  when: ansible_distribution not in "CentOS" and ansible_distribution not in "Fedora"
 
 - name: install pip
   pip:

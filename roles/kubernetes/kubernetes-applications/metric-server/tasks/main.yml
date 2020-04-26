@@ -1,5 +1,5 @@
 ---
-- name: "Install metric-server"
+- name: "Install metric-server on arm arch"
   shell: |
     DOWNLOAD_URL=$(curl -Ls "https://api.github.com/repos/kubernetes-sigs/metrics-server/releases/latest" | jq -r .tarball_url);
     DOWNLOAD_VERSION=$(grep -o '[^/v]*$' <<< $DOWNLOAD_URL);
@@ -7,6 +7,8 @@
     mkdir metrics-server-$DOWNLOAD_VERSION;
     tar -xzf metrics-server-$DOWNLOAD_VERSION.tar.gz --directory metrics-server-$DOWNLOAD_VERSION --strip-components 1;
     echo -e '        command:\n        - /metrics-server\n        - --kubelet-insecure-tls\n        - --kubelet-preferred-address-types=InternalIP\n' >> metrics-server-$DOWNLOAD_VERSION/deploy/1.8+/metrics-server-deployment.yaml;
+    echo -e '      nodeSelector:\n        beta.kubernetes.io/arch: amd64\n' >> metrics-server-$DOWNLOAD_VERSION/deploy/1.8+/metrics-server-deployment.yaml;
+    sed -i 's/amd64/arm/g' metrics-server-$DOWNLOAD_VERSION/deploy/1.8+/metrics-server-deployment.yaml;
     kubectl apply -f metrics-server-$DOWNLOAD_VERSION/deploy/1.8+/;
     rm -rf metrics-server-$DOWNLOAD_VERSION;
   when: inventory_hostname in groups['k8s_masters']

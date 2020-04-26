@@ -1,14 +1,14 @@
 ---
 - hosts: all
+  roles:
+    - common
+  tags: common
+
+- hosts: all
   become: true
   roles:
     - common/docker
   tags: docker
-
-- hosts: all
-  roles:
-    - common
-  tags: common
 
 - hosts: raspbian
   roles:
@@ -55,6 +55,6 @@
     - kubernetes/kubernetes-applications/domoticz
     - kubernetes/kubernetes-applications/jeedom
     - kubernetes/kubernetes-applications/jenkins
-    - kubernetes/kubernetes-applications/gitlab
+    # - kubernetes/kubernetes-applications/gitlab
     - kubernetes/kubernetes-applications/sonarqube
   tags: kubernetes-applications

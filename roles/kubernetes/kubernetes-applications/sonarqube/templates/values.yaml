@@ -12,6 +12,9 @@ ingress:
     - hosts:
         - sonarqube.jugou28.com
       secretName: sonarqube-cert
+nodeSelector: 
+  kubernetes.io/arch: amd64
+
 postgresql:
   enabled: false
   postgresqlServer: 192.168.1.50
@@ -20,4 +23,3 @@ postgresql:
   postgresqlDatabase: sonar
   service:
     port: 15432
-  nodeSelector: "kubernetes.io/arch=amd64"
