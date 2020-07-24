@@ -13,6 +13,8 @@
       - "@Network: {{ ansible_default_ipv4.network }}"
       - "@Type: {{ ansible_default_ipv4.type }}"
       - "@Alias: {{ ansible_default_ipv4.alias }}"
+      - "Package Managment: {{ ansible_pkg_mgr }}"
+
 - name : Wheel configuration (sudoers passwordless)
   block:
   - name: Make sure we have a 'wheel' group
@@ -44,12 +46,29 @@
       - ~/.ssh/id_rsa.pub
   become: yes
 
+- name: Update cache
+  block:
+  - name: Update yum cache
+    yum:
+      update_cache: true
+    when: ansible_pkg_mgr == "yum"
+  - name: Update dnf cache
+    dnf:
+      update_cache: true
+    when: ansible_pkg_mgr == "dnf"
+  - name: Update apt cache
+    apt:
+      update_cache: true
+    when: ansible_pkg_mgr == "apt"
+  become: yes
+
 - name: Update all packages to the latest version
   package:
     name:
       - "*"
     state: latest
   become: yes
+  ignore_errors: True
 
 - name: Install Epel for CentOs release
   package:
@@ -63,10 +82,13 @@
   package:
     name:
       - cockpit
+      - htop
       - python3
       - python3-pip
       - python3-setuptools
+      - python3-virtualenv
       - rsync
+      - vim
     state: latest
   become: yes
 
@@ -74,6 +96,7 @@
   package:
     name:
       - python3-pkg-resources
+      - python3-selinux
     state: latest
   become: yes
   when: ansible_distribution not in "CentOS" and ansible_distribution not in "Fedora"

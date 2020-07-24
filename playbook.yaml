@@ -4,22 +4,23 @@
     - common
   tags: common
 
+- hosts: raspbian
+  roles:
+    - common/raspberry
+  tags: raspberry-common
+  become: yes
+
 - hosts: all
   become: true
   roles:
     - common/docker
   tags: docker
 
-- hosts: raspbian
-  roles:
-    - common/raspberry
-  tags: raspberry-common
-
 - hosts: k8s_masters
   roles:
     - kubernetes/kubernetes-administration/helm
     - kubernetes/kubernetes-administration/kubetail
-    - kubernetes/kubernetes-administration/kui
+#    - kubernetes/kubernetes-administration/kui
   tags: kubernetes-administration
 
 - hosts: k8s_clusters

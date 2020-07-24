@@ -1,11 +1,18 @@
 ---
 - name: Raspberry Kernel Upgrade
   block:
-  - name: Run raspberry kernel upgrade (this can take up to 10 minutes)
-    command: /usr/bin/rpi-update
-    environment:
-      SKIP_WARNING: 1
-  - name: Unconditionally reboot the machine with all defaults
-    reboot:
+    - name: Run raspberry kernel upgrade (this can take up to 10 minutes)
+      command: /usr/bin/rpi-update
+      environment:
+        SKIP_WARNING: 1
+    - name: Unconditionally reboot the machine with all defaults
+      reboot:
   become: yes
   tags: raspberry-upgrade-kernel
+
+- name: Add cgroup directives to boot command line config
+  lineinfile:
+    path: /boot/cmdline.txt
+    regexp: '((.)+?)(\scgroup_\w+=\w+)*$'
+    line: '\1 cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory'
+    backrefs: yes

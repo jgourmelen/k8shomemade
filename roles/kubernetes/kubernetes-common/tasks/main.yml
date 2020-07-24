@@ -47,11 +47,24 @@
   shell: |
     swapoff -a
 
-- name: Add kubernetes repository
+- name: Add kubernetes repository to CentOs or Fedora
   template:
     src: kubernetes.repo.j2
     dest: /etc/yum.repos.d/kubernetes.repo
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Fedora'
+
+- name: Add the packages.cloud.google.com atp key to Debian
+  apt_key:
+    url: "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
+    state: present
+  when: ansible_distribution == 'Debian'
+
+- name: Add kubernetes repository to Debian
+  apt_repository:
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+    filename: kubernetes.list
+  when: ansible_distribution == 'Debian'
 
 - name: Install Kubernetes packages
   package:
@@ -60,6 +73,7 @@
       - kubeadm
       - kubectl
     state: latest
+  ignore_errors: True
 
 - name: Enabled kubelet
   systemd:
