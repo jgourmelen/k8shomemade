@@ -1,16 +1,20 @@
 ---
 - name: Init Kubernetes cluster
-  when: reset_cluster is succeeded and inventory_hostname in groups['k8s_masters']
+  when: inventory_hostname in groups['k8s_masters']
   become: yes
   shell: |
     kubeadm init --service-cidr {{ service_cidr }} \
                  --kubernetes-version {{ kube_version }} \
                  --pod-network-cidr {{ pod_network_cidr }} \
-                 --token {{ token }} \
                  --apiserver-advertise-address {{ master_ip }} \
                  {{ kubeadm_opts }} \
                  {{ init_opts }}
+  args:
+    creates: /etc/kubernetes/admin.conf
   register: init_cluster
+  failed_when:
+    - init_cluster.changed
+    - init_cluster.stdout.find('has initialized successfully') == -1
 
 - name: Create Kubernetes config directory
   file:

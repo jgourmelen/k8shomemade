@@ -1,10 +1,33 @@
 ---
+
+- name: Générer le CA Hash sur le Master
+  shell: >
+    openssl x509 -in /etc/kubernetes/pki/ca.crt -pubkey -noout | openssl rsa -pubin -outform der | sha256sum | cut -d' ' -f1
+  args:
+    executable: /bin/bash
+  register: kubernetes_master_CA_hash
+  changed_when: false
+  delegate_to: "{{ groups.k8s_masters | sort | first }}"
+
+- name: Générer le Token temporaire sur le Master
+  shell: >
+    kubeadm token create --ttl 3m
+  args:
+    executable: /bin/bash
+  register: kubernetes_master_token
+  changed_when: false
+  delegate_to: "{{ groups.k8s_masters | sort | first }}"
+
 - name: Join to Kubernetes cluster
-  when: reset_cluster is succeeded and inventory_hostname in groups['k8s_nodes']
-  shell: |
-    kubeadm join --token {{ token }} \
-                --discovery-token-unsafe-skip-ca-verification \
-                --ignore-preflight-errors=swap \
+  when: inventory_hostname in groups['k8s_nodes']
+  shell: >
+    kubeadm join --token {{ kubernetes_master_token.stdout_lines | first }} \
+                --discovery-token-ca-cert-hash sha256:{{ kubernetes_master_CA_hash.stdout_lines | first }} \
+                --ignore-preflight-errors=all \
                 {{ master_ip }}:6443
+  args:
+    executable: /bin/bash
+    creates: /etc/kubernetes/bootstrap-kubelet.conf
   become: yes
   register: join_cluster
+  ignore_errors: true

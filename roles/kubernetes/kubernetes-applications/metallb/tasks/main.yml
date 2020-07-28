@@ -1,15 +1,13 @@
 ---
-- name: Install metallb
-  shell: |
-    kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.9.3/manifests/namespace.yaml;
-    kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.9.3/manifests/metallb.yaml;
-    kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)";
-  ignore_errors: True
-
 - name: "Create configmap metallb"
   template:
     src: metallb-layer-2-config.yml.j2
     dest: "/tmp/metallb-layer-2-config.yml"
 
-- name: "Create MetalLB configmap in kubernetes"
-  shell: "kubectl apply -f /tmp/metallb-layer-2-config.yml"
+- name: Install metallb
+  shell: |
+    kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.9.3/manifests/namespace.yaml;
+    kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.9.3/manifests/metallb.yaml;
+    kubectl apply -f /tmp/metallb-layer-2-config.yml;
+    kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)";
+  ignore_errors: True
