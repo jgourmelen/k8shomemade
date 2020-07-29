@@ -50,12 +50,12 @@
     - kubernetes/kubernetes-applications/flannel
     - kubernetes/kubernetes-applications/metallb
     - kubernetes/kubernetes-applications/nginx-ingress-controller
-    - kubernetes/kubernetes-applications/traefik
+#    - kubernetes/kubernetes-applications/traefik
     - kubernetes/kubernetes-applications/cert-manager
     - kubernetes/kubernetes-applications/metric-server
-    - kubernetes/kubernetes-applications/domoticz
-    - kubernetes/kubernetes-applications/jeedom
-    - kubernetes/kubernetes-applications/jenkins
-    # - kubernetes/kubernetes-applications/gitlab
-    - kubernetes/kubernetes-applications/sonarqube
+#    - kubernetes/kubernetes-applications/domoticz
+#    - kubernetes/kubernetes-applications/jeedom
+#    - kubernetes/kubernetes-applications/jenkins
+#    - kubernetes/kubernetes-applications/gitlab
+#    - kubernetes/kubernetes-applications/sonarqube
   tags: kubernetes-applications

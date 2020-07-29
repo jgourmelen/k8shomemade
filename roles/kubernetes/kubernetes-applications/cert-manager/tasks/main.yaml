@@ -7,13 +7,10 @@
         dest: cert-manager.yaml
     - name: Install cert-manager
       shell: |
-        kubectl delete crd challenges.acme.cert-manager.io;
-        kubectl delete crd clusterissuers.cert-manager.io;
-        kubectl delete crd issuers.cert-manager.io;
-        kubectl delete crd orders.acme.cert-manager.io;
-        kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.16.0/cert-manager.crds.yaml;
-        kubectl apply -f cert-manager.yaml;
-        helm upgrade cert-manager jetstack/cert-manager --install;
+        curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.19.0-rc.2/bin/$(uname | tr '[:upper:]' '[:lower:]')/amd64/kubectl;
+        chmod +x ./kubectl;
+        ./kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.16.0/cert-manager.yaml;
+        ./kubectl apply -f cert-manager.yaml;
     - name: Delete cert-manager file yaml
       file:
         path: cert-manager

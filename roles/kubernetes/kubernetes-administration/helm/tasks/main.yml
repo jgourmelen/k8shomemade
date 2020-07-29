@@ -26,11 +26,14 @@
           - name: Add Helm repo traefik
             shell: helm repo add traefik https://containous.github.io/traefik-helm-chart
 
-          - name: Add Helm repo traefik
+          - name: Add Helm repo oteemocharts
             shell: helm repo add oteemocharts https://oteemo.github.io/charts
 
-          - name: Add Helm repo traefik
+          - name: Add Helm repo jetstack
             shell: helm repo add jetstack https://charts.jetstack.io
+
+          - name: Add Helm repo nginx
+            shell: helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 
     - name: Update Helm repo
       shell: helm repo update

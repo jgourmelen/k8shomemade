@@ -1,10 +1,12 @@
 ---
 - name: "Install Nginx Ingress Controller"
-  shell: "helm upgrade nginx-ingress stable/nginx-ingress --install \
+  shell: |
+    helm upgrade nginx-ingress ingress-nginx/ingress-nginx --install \
           --namespace kube-system \
           --set controller.service.externalTrafficPolicy=Local \
           --set controller.service.type=LoadBalancer \
-          --set controller.image.repository=quay.io/kubernetes-ingress-controller/nginx-ingress-controller-arm \
-          --set controller.image.tag=0.30.0 \
-          --set defaultBackend.enabled=false"
+          --set controller.nodeSelector."kubernetes\.io/hostname"=d630 \
+          --set defaultBackend.enabled=false \
+          --set controller.admissionWebhooks.enabled=false
   tags: nginx-ingress-controller
+

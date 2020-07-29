@@ -18,8 +18,8 @@ nodeSelector:
 postgresql:
   enabled: false
   postgresqlServer: 192.168.1.50
-  postgresqlUsername: sonar
-  postgresqlPassword: sonar
-  postgresqlDatabase: sonar
+  postgresqlUsername: sonarqube
+  postgresqlPassword: sonarqube
+  postgresqlDatabase: sonarqube
   service:
     port: 15432
