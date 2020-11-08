@@ -23,10 +23,10 @@
 #    - kubernetes/kubernetes-administration/kui
   tags: kubernetes-administration
 
-#- hosts: k8s_clusters
-#  roles:
-#    - kubernetes/kubernetes-reset
-#  tags: kubernetes-reset
+- hosts: k8s_clusters
+  roles:
+    - kubernetes/kubernetes-reset
+  tags: kubernetes-reset
 
 - hosts: k8s_clusters
   roles:

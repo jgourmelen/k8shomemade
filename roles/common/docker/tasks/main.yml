@@ -44,7 +44,12 @@
       name: "{{ ansible_user }}"
       group: docker
       append: yes
-  
+
+  - name: install the docker daemon.json for systemd configuration
+    template:
+      src: daemon.json
+      dest: /etc/docker/daemon.json
+
   - name: Start and enable docker service
     systemd:
       name: docker

@@ -23,11 +23,11 @@
   shell: >
     kubeadm join --token {{ kubernetes_master_token.stdout_lines | first }} \
                 --discovery-token-ca-cert-hash sha256:{{ kubernetes_master_CA_hash.stdout_lines | first }} \
-                --ignore-preflight-errors=all \
                 {{ master_ip }}:6443
   args:
     executable: /bin/bash
     creates: /etc/kubernetes/bootstrap-kubelet.conf
   become: yes
   register: join_cluster
-  ignore_errors: true
+#  ignore_errors: true
+

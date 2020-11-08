@@ -7,10 +7,8 @@
         dest: cert-manager.yaml
     - name: Install cert-manager
       shell: |
-        curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.19.0-rc.2/bin/$(uname | tr '[:upper:]' '[:lower:]')/amd64/kubectl;
-        chmod +x ./kubectl;
-        ./kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.16.0/cert-manager.yaml;
-        ./kubectl apply -f cert-manager.yaml;
+        kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v1.0.4/cert-manager.yaml ;
+        kubectl apply -f cert-manager.yaml;
     - name: Delete cert-manager file yaml
       file:
         path: cert-manager

@@ -18,10 +18,10 @@
     - name: Add Helm Repo
       block:
           - name: Add Helm repo stable
-            shell: helm repo add stable https://kubernetes-charts.storage.googleapis.com
+            shell: helm repo add stable https://charts.helm.sh/stable
 
           - name: Add Helm repo incubator
-            shell: helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
+            shell: helm repo add incubator https://charts.helm.sh/incubator
 
           - name: Add Helm repo traefik
             shell: helm repo add traefik https://containous.github.io/traefik-helm-chart

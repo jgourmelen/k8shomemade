@@ -97,6 +97,8 @@
     name:
       - python3-pkg-resources
       - python3-selinux
+      - openresolv
+      - resolvconf
     state: latest
   become: yes
   when: ansible_distribution not in "CentOS" and ansible_distribution not in "Fedora"

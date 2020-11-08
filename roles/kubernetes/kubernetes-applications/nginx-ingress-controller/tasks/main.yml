@@ -6,7 +6,6 @@
           --set controller.service.externalTrafficPolicy=Local \
           --set controller.service.type=LoadBalancer \
           --set controller.nodeSelector."kubernetes\.io/hostname"=d630 \
-          --set defaultBackend.enabled=false \
           --set controller.admissionWebhooks.enabled=false
   tags: nginx-ingress-controller
 

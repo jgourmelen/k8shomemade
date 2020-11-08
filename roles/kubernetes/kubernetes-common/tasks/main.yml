@@ -79,3 +79,14 @@
   systemd:
     name: kubelet
     enabled: yes
+
+- name: mkdir /run/systemd/resolve
+  file:
+    path=/run/systemd/resolve
+    state=directory
+
+- name: setup resolv.conf symlink
+  file: src=/etc/resolv.conf
+        path=/run/systemd/resolve/resolv.conf
+        state=link
+        force=yes

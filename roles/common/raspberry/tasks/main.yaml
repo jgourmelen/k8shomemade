@@ -8,6 +8,7 @@
     - name: Unconditionally reboot the machine with all defaults
       reboot:
   become: yes
+  ignore_errors: yes
   tags: raspberry-upgrade-kernel
 
 - name: Add cgroup directives to boot command line config
