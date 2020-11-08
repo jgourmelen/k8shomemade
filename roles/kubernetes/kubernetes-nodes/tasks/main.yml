@@ -31,3 +31,14 @@
   register: join_cluster
 #  ignore_errors: true
 
+
+- name: Labels roles of workers
+  shell: >
+    kubectl label --overwrite nodes rog kubernetes.io/role=desktop ;
+    kubectl label --overwrite nodes d630 kubernetes.io/role=server ;
+    kubectl label --overwrite nodes domotique kubernetes.io/role=domotique ;
+    kubectl label --overwrite nodes pinode01 kubernetes.io/role=arm ;
+    kubectl label --overwrite nodes pinode02 kubernetes.io/role=arm ;
+    kubectl label --overwrite nodes pinode03 kubernetes.io/role=arm ;
+    kubectl label --overwrite nodes pinode04 kubernetes.io/role=arm ;
+  delegate_to: "{{ groups.k8s_masters | sort | first }}"
